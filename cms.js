@@ -408,22 +408,49 @@ export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
   const adm = express.Router();
 
   const AD = path.join(pub, '..', 'admin');
+  const ICON = {
+    enquiries: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+    articles: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+    news: '<path d="M4 5h13v14H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v8a2 2 0 0 1-2 2M8 9h5M8 13h5"/>',
+    overview: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+    projects: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+    jobs: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
+    team: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>',
+    analytics: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+    settings: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+    users: '<path d="M12 3 4 6v6c0 4.5 3.2 8 8 9 4.8-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+    account: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 18.5a6.5 6.5 0 0 1 11 0"/>'
+  };
+  // [id, label, ownerOnly, description]
   const GROUPS = [
-    ['Inbox', [['enquiries', 'Enquiries', 1]]],
-    ['Content', [['articles', 'Articles'], ['news', 'News and events'], ['projects', 'Projects'], ['jobs', 'Jobs'], ['team', 'Team']]],
-    ['Site', [['analytics', 'Analytics', 1], ['settings', 'Settings', 1], ['users', 'Users', 1], ['account', 'Account']]]
+    ['Workspace', [['overview', 'Overview', 0, 'Monitor enquiries, applications, content and website traffic at a glance.']]],
+    ['Inbox', [['enquiries', 'Enquiries', 1, 'Review project submissions, client, investor and partner enquiries, and job applications.']]],
+    ['Content', [
+      ['articles', 'Articles', 0, 'Write and publish insights that appear on the Insights page.'],
+      ['news', 'News and events', 0, 'Announce company news and upcoming events.'],
+      ['projects', 'Projects', 0, 'Manage the opportunities shown in the public pipeline.'],
+      ['jobs', 'Jobs', 0, 'Publish open roles on the Careers page.'],
+      ['team', 'Team', 0, 'Maintain the leadership and team profiles.']
+    ]],
+    ['Site', [
+      ['analytics', 'Analytics', 1, 'Cookie-free page views for the last 30 days.'],
+      ['settings', 'Settings', 1, 'Contact details used across the website.'],
+      ['users', 'Users', 1, 'Create editors and admins, or reset a password.'],
+      ['account', 'Account', 0, 'Your sign-in details.']
+    ]]
   ];
-  const PG = Object.fromEntries(GROUPS.flatMap(([, l]) => l).map(([n, t, o]) => [n, { t, o }]));
-  const nav = cur => GROUPS.map(([g, l]) => `<div class="side-g"><span class="side-h">${g}</span>${l.map(([n, t, o]) => `<a href="/admin/${n}"${n === cur ? ' class="on" aria-current="page"' : ''}${o ? ' data-owner' : ''}>${esc(t)}</a>`).join('')}</div>`).join('');
+  const PG = Object.fromEntries(GROUPS.flatMap(([, l]) => l).map(([n, t, o, d]) => [n, { t, o, d }]));
+  const svg = n => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
+  const nav = cur => GROUPS.map(([g, l]) => `<div class="side-g"><span class="side-h">${g}</span>${l.map(([n, t, o]) => `<a href="/admin/${n}" title="${esc(t)}"${n === cur ? ' class="on" aria-current="page"' : ''}${o ? ' data-owner' : ''}>${svg(n)}<span>${esc(t)}</span></a>`).join('')}</div>`).join('');
   const tpl = f => fs.readFileSync(path.join(AD, f), 'utf8');
   const send = (s, h) => s.set('Cache-Control', 'no-store').type('html').send(h);
 
-  adm.get('/', (q, s) => s.redirect('/admin/enquiries'));
+  adm.get('/', (q, s) => s.redirect('/admin/overview'));
   adm.get('/login', (q, s) => send(s, tpl('login.html')));
   adm.get('/:p', (q, s, n) => {
     const k = q.params.p;
     if (!Object.hasOwn(PG, k)) return n();
-    const v = { title: esc(PG[k].t), nav: nav(k), owner: PG[k].o ? ' data-owner="1"' : '', content: tpl('pages/' + k + '.html') };
+    const v = { title: esc(PG[k].t), desc: esc(PG[k].d), nav: nav(k), owner: PG[k].o ? ' data-owner="1"' : '', content: tpl('pages/' + k + '.html') };
     send(s, tpl('layout.html').replace(/\{\{(\w+)\}\}/g, (m, x) => v[x] ?? m));
   });
   adm.use((q, s, n) => /^\/(api|cv)(\/|$)/.test(q.path) ? n() : s.status(404).sendFile(path.join(pub, '404.html')));
@@ -462,6 +489,18 @@ export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
 
   const U = store(dataDir);
   const OWNER = () => process.env.ADMIN_USER || 'admin';
+
+  adm.get('/api/overview', (q, s) => {
+    const d = load(), ed = q.admin.role === 'editor';
+    const cnt = c => ({ total: d[c].length, live: d[c].filter(x => x.published).length });
+    const out = { articles: cnt('articles'), news: cnt('news'), projects: cnt('projects'), jobs: cnt('jobs'), team: cnt('team') };
+    if (!ed) {
+      const rs = all(), st = r => d.status[r.id] || 'new';
+      out.enquiries = { total: rs.length, new: rs.filter(r => st(r) === 'new').length, applications: rs.filter(r => r.type === 'career').length };
+      out.views = Object.keys(A).sort().slice(-30).reduce((n, k) => n + Object.values(A[k]).reduce((a, b) => a + b, 0), 0);
+    }
+    s.json(out);
+  });
 
   adm.get('/api/me', (q, s) => s.json(q.admin));
   adm.get('/api/users', (q, s) => s.json(U.load().map(({ user, role }) => ({ user, role }))));

@@ -97,7 +97,9 @@
       $$('.side-g').forEach(g => !$('a', g) && g.remove());
     }
 
-    $('#who').textContent = me.user + ' (' + me.role + ')';
+    $('#who').textContent = me.user;
+    $('#who').title = me.user + ' (' + me.role + ')';
+    $('#avatar').textContent = me.user.charAt(0).toUpperCase();
 
     try {
       await fn(view, me);
@@ -106,20 +108,42 @@
     }
   });
 
+  if (localStorage.getItem('pdc_side') === 'min') document.documentElement.classList.add('side-min');
+
   document.addEventListener('DOMContentLoaded', () => {
     const out = $('#signout');
     if (out) out.onclick = () => signout('out');
 
     const side = $('#side');
-    const btn = $('#sidebtn');
-    if (!side || !btn) return;
+    if (!side) return;
+    const root = document.documentElement;
+    const mobile = () => matchMedia('(max-width:900px)').matches;
     const set = o => {
       side.classList.toggle('open', o);
       $('#scrim').classList.toggle('on', o);
-      btn.setAttribute('aria-expanded', o);
+      $('#sidebtn').setAttribute('aria-expanded', o);
     };
-    btn.onclick = () => set(!side.classList.contains('open'));
+
+    $('#sidebtn').onclick = () => set(!side.classList.contains('open'));
     $('#scrim').onclick = () => set(false);
+    $('#collapse').onclick = () => {
+      if (mobile()) return set(false);
+      const min = root.classList.toggle('side-min');
+      localStorage.setItem('pdc_side', min ? 'min' : '');
+    };
+
+    const acct = $('#acct');
+    const menu = $('#acctmenu');
+    const toggle = o => {
+      menu.hidden = !o;
+      acct.setAttribute('aria-expanded', o);
+    };
+    acct.onclick = e => {
+      e.stopPropagation();
+      toggle(menu.hidden);
+    };
+    document.addEventListener('click', e => !menu.contains(e.target) && toggle(false));
+    document.addEventListener('keydown', e => e.key === 'Escape' && toggle(false));
   });
 
   window.PDC = { $, $$, el, note, ask, empty, api, raw, dl, page, setAuth, signout, hasAuth: () => !!AUTH };

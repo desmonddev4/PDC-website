@@ -3,20 +3,31 @@
 <body{{owner}}>
 <div class="orb o1"></div><div class="orb o2"></div>
 <div class="adm-shell">
- <aside class="adm-side glass" id="side">
-  <a class="brand" href="/admin/enquiries"><span class="chip"><img src="/assets/logo.webp" alt=""></span>PDC Admin</a>
+ <aside class="adm-side" id="side">
+  <div class="side-head">
+   <a class="side-brand" href="/admin/overview"><span class="chip"><img src="/assets/logo.webp" alt=""></span><span class="side-t"><b>PDC</b><small>Admin console</small></span></a>
+   <button class="side-collapse" id="collapse" type="button" aria-label="Collapse sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+  </div>
   <div class="side-nav">{{nav}}</div>
   <div class="side-foot">
-   <div class="dim" id="who"></div>
-   <a class="btn g sm" href="/" target="_blank" rel="noopener">View site</a>
-   <button class="btn g sm" id="signout" type="button">Sign out</button>
+   <div class="acct-menu" id="acctmenu" hidden>
+    <a href="/" target="_blank" rel="noopener">View site</a>
+    <button id="signout" type="button">Sign out</button>
+   </div>
+   <button class="acct" id="acct" type="button" aria-expanded="false" aria-controls="acctmenu">
+    <span class="avatar" id="avatar">?</span>
+    <span class="acct-t"><small>Signed in</small><b id="who">&nbsp;</b></span>
+    <svg class="acct-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
+   </button>
   </div>
  </aside>
  <div class="side-scrim" id="scrim"></div>
  <div class="adm-main">
   <header class="adm-top">
    <button class="side-toggle" id="sidebtn" type="button" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+   <span class="pill"><i></i>Restricted area</span>
    <h1>{{title}}</h1>
+   <p class="sub">{{desc}}</p>
   </header>
   <main id="main">{{content}}</main>
  </div>

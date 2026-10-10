@@ -1,7 +1,7 @@
 (() => {
   const { $, el, setAuth, hasAuth } = PDC;
   const view = $('#view');
-  if (hasAuth()) return location.replace('/admin/enquiries');
+  if (hasAuth()) return location.replace('/admin/overview');
 
   const MSG = {
     expired: 'Your session has ended. Please sign in again.',
@@ -35,7 +35,7 @@
       if (r.status === 429) throw 'Too many attempts. Please wait a few minutes and try again.';
       if (!r.ok) throw 'Something went wrong. Please try again.';
       setAuth(a);
-      location.replace('/admin/enquiries');
+      location.replace('/admin/overview');
     } catch (x) {
       err.textContent = typeof x === 'string' ? x : 'Could not reach the server.';
       err.style.display = 'block';
