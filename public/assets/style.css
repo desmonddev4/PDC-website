@@ -100,3 +100,18 @@ button:disabled{opacity:.6;cursor:wait}
 .av{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--navy2));border:1px solid var(--gb);font:500 1.6rem var(--serif);margin-bottom:14px}
 details.card summary{cursor:pointer;font:500 1.25rem var(--serif)}details.card[open] summary{color:var(--gold)}
 .cover{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:14px;margin:0 0 16px;display:block}img.av{display:block;object-fit:cover}.searchf{max-width:640px;margin-bottom:30px}
+[hidden]{display:none!important}
+fieldset.step{border:0;padding:0;margin:0;display:grid;gap:14px;min-width:0}
+.steps{display:flex;gap:8px;list-style:none;margin:0 0 6px;padding:0}
+.steps li{flex:1;display:flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;color:var(--mut);padding-bottom:10px;border-bottom:2px solid var(--gb)}
+.steps li span{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1px solid var(--gb);font-size:.75rem}
+.steps li.on{color:#fff;border-color:var(--gold)}.steps li.on span,.steps li.done span{background:var(--gold);border-color:var(--gold);color:#1a1200}
+.steps li.done{border-color:var(--gold2)}
+.stepnav{display:flex;gap:12px;justify-content:space-between}.stepnav .btn:only-of-type{margin-left:auto}.stepnav .next,.stepnav .send{margin-left:auto}
+.filepick{display:grid;gap:8px}.fp-l{font-size:.85rem;font-weight:600;color:var(--mut)}
+.fp-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.fp-drop{display:flex;flex-direction:column;align-items:center;gap:4px;padding:22px;border:1.5px dashed var(--gb);border-radius:14px;background:rgba(4,11,46,.55);cursor:pointer;text-align:center;font-weight:500;transition:.25s}
+.fp-drop b{color:var(--gold)}.fp-drop:hover,.fp-drop.over,.fp-input:focus-visible+.fp-drop{border-color:var(--gold);background:rgba(242,180,0,.08)}
+.fp-file{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--gold);background:rgba(242,180,0,.08);word-break:break-all}
+.fp-x{width:28px;height:28px;border-radius:50%;border:1px solid var(--gb);background:transparent;color:#fff;font-size:1.1rem;line-height:1;cursor:pointer}.fp-x:hover{border-color:var(--gold);color:var(--gold)}
+.fp-err{padding:10px 14px;border-radius:12px;background:rgba(255,80,80,.16);border:1px solid rgba(255,80,80,.5);font-size:.85rem}

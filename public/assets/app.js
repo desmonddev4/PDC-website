@@ -85,11 +85,90 @@
     addEventListener('hashchange', fromHash);
   }
 
+  $$('.filepick').forEach(w => {
+    const i = $('input', w);
+    const drop = $('.fp-drop', w);
+    const chip = $('.fp-file', w);
+    const err = $('.fp-err', w);
+    const show = () => {
+      const f = i.files[0];
+      drop.hidden = !!f;
+      chip.hidden = !f;
+      if (f) $('.fp-name', w).textContent = f.name + ' (' + (f.size / 1048576).toFixed(1) + ' MB)';
+    };
+    const pick = () => {
+      const f = i.files[0];
+      err.hidden = true;
+      if (f && (f.size > 4e6 || f.type !== 'application/pdf')) {
+        i.value = '';
+        err.textContent = 'The CV must be a PDF under 4 MB.';
+        err.hidden = false;
+      }
+      show();
+    };
+    i.addEventListener('change', pick);
+    $('.fp-x', w).onclick = () => {
+      i.value = '';
+      err.hidden = true;
+      show();
+      i.focus();
+    };
+    ['dragenter', 'dragover'].forEach(n => drop.addEventListener(n, e => {
+      e.preventDefault();
+      drop.classList.add('over');
+    }));
+    ['dragleave', 'drop'].forEach(n => drop.addEventListener(n, e => {
+      e.preventDefault();
+      drop.classList.remove('over');
+    }));
+    drop.addEventListener('drop', e => {
+      if (e.dataTransfer.files.length) {
+        i.files = e.dataTransfer.files;
+        pick();
+      }
+    });
+    w.closest('form').addEventListener('reset', () => setTimeout(() => {
+      err.hidden = true;
+      show();
+    }));
+  });
+
+  $$('form[data-steps]').forEach(f => {
+    const ps = $$('.step', f);
+    const dots = $$('.steps li', f);
+    const last = ps.length - 1;
+    let n = 0;
+    const go = k => {
+      n = k;
+      ps.forEach((p, j) => p.hidden = j !== k);
+      dots.forEach((d, j) => {
+        d.classList.toggle('on', j === k);
+        d.classList.toggle('done', j < k);
+      });
+      $('.back', f).hidden = k === 0;
+      $('.next', f).hidden = k === last;
+      $('.send', f).hidden = k !== last;
+    };
+    const next = () => {
+      if ($$('input,select,textarea', ps[n]).every(x => x.reportValidity())) go(n + 1);
+    };
+    $('.next', f).onclick = next;
+    $('.back', f).onclick = () => go(n - 1);
+    f.addEventListener('submit', e => {
+      if (n < last) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        next();
+      }
+    });
+    f.addEventListener('reset', () => setTimeout(() => go(0)));
+  });
+
   fm.forEach(f => f.addEventListener('submit', async e => {
     e.preventDefault();
     const ok = $('.ok', f);
     const er = $('.err', f);
-    const b = $('button.btn', f);
+    const b = $('.send', f) || $('button.btn', f);
     ok.style.display = er.style.display = 'none';
     b.disabled = true;
 
