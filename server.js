@@ -164,7 +164,11 @@ app.get('/sitemap.xml', (q, s) => s.type('application/xml').send(
   `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...new Set([...Object.keys(routes), ...cms.urls()])].map(r => `<url><loc>${SITE}${r === '/' ? '' : r}</loc></url>`).join('')}</urlset>`
 ));
 
-app.use('/assets', express.static(path.join(pub, 'assets'), { maxAge: '7d' }));
+app.use('/assets', express.static(path.join(pub, 'assets'), {
+  maxAge: '7d',
+  // CSS and JS change between deploys, so browsers must revalidate them.
+  setHeaders: (s, f) => /\.(css|js)$/.test(f) && s.setHeader('Cache-Control', 'no-cache')
+}));
 
 for (const [r, f] of Object.entries(routes)) {
   app.get(r, (q, s) => s.type('html').send(cms.fill(fs.readFileSync(path.join(pub, f), 'utf8'))));

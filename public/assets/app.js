@@ -17,40 +17,67 @@
   scrim.className = 'nav-scrim';
   document.body.append(scrim);
 
+  // Hamburger / close icons (SVG so they render crisply and consistently)
+  const ICON_OPEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+  const ICON_CLOSE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+  menu.setAttribute('aria-controls', 'links');
+  menu.innerHTML = ICON_OPEN;
+
   const setMenu = o => {
     links.classList.toggle('on', o);
     document.body.classList.toggle('nav-open', o);
     menu.setAttribute('aria-expanded', o);
     menu.setAttribute('aria-label', o ? 'Close menu' : 'Open menu');
-    menu.innerHTML = o ? '&#10005;' : '&#9776;';
+    menu.innerHTML = o ? ICON_CLOSE : ICON_OPEN;
+    if (o) links.scrollTop = 0;
   };
 
   menu.onclick = () => setMenu(!links.classList.contains('on'));
   scrim.onclick = () => setMenu(false);
-  addEventListener('keydown', e => e.key === 'Escape' && setMenu(false));
+  addEventListener('keydown', e => {
+    if (e.key === 'Escape' && links.classList.contains('on')) {
+      setMenu(false);
+      menu.focus();
+    }
+  });
   addEventListener('resize', () => innerWidth > 900 && setMenu(false));
   links.addEventListener('click', e => e.target.closest('a') && setMenu(false));
 
+  // Mark the current page in the menu (top-level links, dropdown parents and dropdown items).
   const p = location.pathname.replace(/\/$/, '') || '/';
-  $$('.links > a, .dd > a').forEach(a => {
+  $$('.links > a, .dd > a, .dd > div a').forEach(a => {
     const h = a.getAttribute('href');
+    if (!h || h.startsWith('#') || a.classList.contains('btn')) return;
     if (h === p || (h !== '/' && p.startsWith(h + '/'))) a.classList.add('on');
   });
 
   // Mobile: each dropdown collapses behind a chevron; the one holding the current page starts open.
-  $$('.dd', links).forEach(d => {
+  // Only one group is open at a time so the menu stays short and easy to scan.
+  const groups = $$('.dd', links);
+  groups.forEach((d, gi) => {
     const a = $('a', d);
+    const panel = $('div', d);
     const t = document.createElement('button');
     t.type = 'button';
     t.className = 'dd-t';
     t.setAttribute('aria-expanded', 'false');
     t.setAttribute('aria-label', 'Toggle ' + a.textContent.trim() + ' menu');
+    if (panel) {
+      panel.id = panel.id || 'dd-panel-' + gi;
+      t.setAttribute('aria-controls', panel.id);
+    }
     a.after(t);
     const set = o => {
       d.classList.toggle('open', o);
       t.setAttribute('aria-expanded', o);
     };
-    t.onclick = () => set(!d.classList.contains('open'));
+    d._set = set;
+    t.onclick = () => {
+      const o = !d.classList.contains('open');
+      groups.forEach(g => g !== d && g._set(false));
+      set(o);
+    };
     if ($$('div a', d).some(x => x.getAttribute('href') === p)) set(true);
   });
 

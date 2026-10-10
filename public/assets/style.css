@@ -1,4 +1,3 @@
-
 :root{--navy:#040b2e;--navy2:#071447;--blue:#0a3fd0;--sky:#2f7bff;--gold:#f2b400;--gold2:#c88a0a;--ink:#eaf0ff;--mut:#9fb0d8;--glass:rgba(255,255,255,.07);--gb:rgba(255,255,255,.16);--serif:'Newsreader',Georgia,'Times New Roman',serif;--sans:'Manrope',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-behavior:smooth;scroll-padding-top:90px}
@@ -116,27 +115,54 @@ fieldset.step{border:0;padding:0;margin:0;display:grid;gap:14px;min-width:0}
 .fp-x{width:28px;height:28px;border-radius:50%;border:1px solid var(--gb);background:transparent;color:#fff;font-size:1.1rem;line-height:1;cursor:pointer}.fp-x:hover{border-color:var(--gold);color:var(--gold)}
 .fp-err{padding:10px 14px;border-radius:12px;background:rgba(255,80,80,.16);border:1px solid rgba(255,80,80,.5);font-size:.85rem}
 
-/* Mobile navigation: scrollable panel, collapsible dropdowns, larger touch targets */
+/* ==========================================================
+   Mobile navigation
+   A tidy sheet under the nav pill: big touch targets, clear
+   active state, accordion sub-menus with a gold guide line,
+   and a full-width call-to-action at the bottom.
+   ========================================================== */
 .dd-t{display:none}
+.menu svg{width:22px;height:22px;display:block}
+@keyframes menu-in{from{opacity:0;transform:translateY(-10px) scale(.98)}}
 @media(max-width:900px){
 body.nav-open{overflow:hidden}
-.nav-scrim{position:fixed;inset:0;background:rgba(2,6,24,.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);z-index:80;opacity:0;pointer-events:none;transition:opacity .3s}
+.nav-scrim{position:fixed;inset:0;background:rgba(2,6,24,.65);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);z-index:80;opacity:0;pointer-events:none;transition:opacity .3s}
 body.nav-open .nav-scrim{opacity:1;pointer-events:auto}
-.menu{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.35rem;line-height:1;transition:background .25s}
-.menu[aria-expanded=true]{background:rgba(255,255,255,.12)}
-.links{top:calc(100% + 10px);gap:0;padding:8px;align-items:stretch;max-height:calc(100vh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;overscroll-behavior:contain;background:rgba(4,11,46,.98);box-shadow:0 20px 50px rgba(0,0,0,.55)}
-.links.on{animation:in .25s}
-.links a{display:block;padding:13px 14px;border-radius:12px;font-size:1rem}
-.links>a,.links>.dd{border-bottom:1px solid rgba(255,255,255,.07)}
-.dd{display:flex;flex-wrap:wrap;align-items:center}
-.dd>a{flex:1}
-.dd-t{display:grid;place-items:center;flex:none;width:44px;height:44px;border:0;border-radius:12px;background:none;color:var(--mut);cursor:pointer}
-.dd-t::before{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .25s}
+body.nav-open nav{background:rgba(4,11,46,.97);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+
+.menu{width:44px;height:44px;padding:0;border-radius:50%;display:grid;place-items:center;transition:background .25s}
+.menu:hover,.menu[aria-expanded=true]{background:rgba(255,255,255,.12)}
+
+/* the sheet */
+.links{top:calc(100% + 10px);left:0;right:0;gap:2px;padding:10px;align-items:stretch;border-radius:24px;
+  max-height:calc(100vh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  background:linear-gradient(180deg,#0b1a5c 0%,#050d33 100%);border:1px solid var(--gb);
+  box-shadow:0 28px 70px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.12)}
+.links.on{animation:menu-in .28s cubic-bezier(.2,.7,.2,1)}
+
+/* every link: roomy rows */
+.links a{display:flex;align-items:center;min-height:48px;padding:12px 16px;border-radius:14px;font-size:1.02rem;font-weight:600;color:#dfe7ff}
+.links a:hover,.links a:active{background:rgba(255,255,255,.08);color:#fff}
+.links a.on{color:#fff;background:rgba(242,180,0,.12);box-shadow:inset 3px 0 0 var(--gold)}
+
+/* dropdown group: link on the left, chevron button on the right */
+.dd{display:flex;flex-wrap:wrap;align-items:center;border-radius:14px;transition:background .25s}
+.dd.open{background:rgba(255,255,255,.045)}
+.dd>a{flex:1;min-width:0}
+.dd-t{display:grid;place-items:center;flex:none;width:48px;height:48px;border:0;border-radius:14px;background:none;color:var(--mut);cursor:pointer;transition:color .2s,background .2s}
+.dd-t:hover{background:rgba(255,255,255,.08);color:#fff}
+.dd-t::before{content:"";width:9px;height:9px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .25s}
 .dd.open>.dd-t{color:var(--gold)}
 .dd.open>.dd-t::before{transform:translateY(2px) rotate(-135deg)}
+
+/* sub-menu: hidden until the group is opened (overrides desktop hover/focus-within) */
+.dd>div{position:static;flex:0 0 100%;min-width:0;display:none;flex-direction:column;gap:2px;margin:0 10px 10px 24px;padding:2px 0 2px 12px;
+  background:none;border:0;border-left:2px solid rgba(242,180,0,.4);border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 .dd:hover>div,.dd:focus-within>div{display:none;animation:none}
 .dd.open>div{display:flex;animation:in .25s}
-.dd>div{flex:0 0 100%;margin:0 0 8px 14px;padding:0 0 0 10px;border-left:1px solid var(--gb)}
-.dd>div a{padding:11px 12px;font-size:.93rem}
-.links a.btn,.links a.btn:hover,.links a.btn.on{display:flex;justify-content:center;margin:10px 4px 4px;padding:14px 20px;border-bottom:0}
+.dd>div a{min-height:44px;padding:10px 12px;font-size:.95rem;font-weight:500;color:var(--mut)}
+.dd>div a.on{color:#fff}
+
+/* call-to-action */
+.links a.btn,.links a.btn:hover,.links a.btn.on{display:flex;justify-content:center;margin:10px 4px 4px;padding:15px 20px;font-size:1rem;color:#1a1200;box-shadow:0 8px 26px rgba(242,180,0,.32)}
 }

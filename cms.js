@@ -445,7 +445,9 @@ export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
   const svg = n => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
   const nav = cur => GROUPS.map(([g, l]) => `<div class="side-g"><span class="side-h">${g}</span>${l.map(([n, t, o]) => `<a href="/admin/${n}" title="${esc(t)}"${n === cur ? ' class="on" aria-current="page"' : ''}${o ? ' data-owner' : ''}>${svg(n)}<span>${esc(t)}</span></a>`).join('')}</div>`).join('');
   const tpl = f => fs.readFileSync(path.join(AD, f), 'utf8');
-  const send = (s, h) => s.set('Cache-Control', 'no-store').type('html').send(h);
+  // Changes on every restart, so a deploy busts the browser cache for admin assets.
+  const VER = Date.now().toString(36);
+  const send = (s, h) => s.set('Cache-Control', 'no-store').type('html').send(h.replace(/\{\{v\}\}/g, VER));
 
   adm.get('/', (q, s) => s.redirect('/admin/overview'));
   adm.get('/login', (q, s) => send(s, tpl('login.html')));
