@@ -403,14 +403,34 @@ export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
     dirty = 0;
   };
   setInterval(flush, 30000).unref();
-  process.on('SIGTERM', () => { flush(); process.exit(0); });
+  process.on('SIGTERM', flush);
 
   const adm = express.Router();
+
+  const AD = path.join(pub, '..', 'admin');
+  const GROUPS = [
+    ['Inbox', [['enquiries', 'Enquiries', 1]]],
+    ['Content', [['articles', 'Articles'], ['news', 'News and events'], ['projects', 'Projects'], ['jobs', 'Jobs'], ['team', 'Team']]],
+    ['Site', [['analytics', 'Analytics', 1], ['settings', 'Settings', 1], ['users', 'Users', 1], ['account', 'Account']]]
+  ];
+  const PG = Object.fromEntries(GROUPS.flatMap(([, l]) => l).map(([n, t, o]) => [n, { t, o }]));
+  const nav = cur => GROUPS.map(([g, l]) => `<div class="side-g"><span class="side-h">${g}</span>${l.map(([n, t, o]) => `<a href="/admin/${n}"${n === cur ? ' class="on" aria-current="page"' : ''}${o ? ' data-owner' : ''}>${esc(t)}</a>`).join('')}</div>`).join('');
+  const tpl = f => fs.readFileSync(path.join(AD, f), 'utf8');
+  const send = (s, h) => s.set('Cache-Control', 'no-store').type('html').send(h);
+
+  adm.get('/', (q, s) => s.redirect('/admin/enquiries'));
+  adm.get('/login', (q, s) => send(s, tpl('login.html')));
+  adm.get('/:p', (q, s, n) => {
+    const k = q.params.p;
+    if (!Object.hasOwn(PG, k)) return n();
+    const v = { title: esc(PG[k].t), nav: nav(k), owner: PG[k].o ? ' data-owner="1"' : '', content: tpl('pages/' + k + '.html') };
+    send(s, tpl('layout.html').replace(/\{\{(\w+)\}\}/g, (m, x) => v[x] ?? m));
+  });
+  adm.use((q, s, n) => /^\/(api|cv)(\/|$)/.test(q.path) ? n() : s.status(404).sendFile(path.join(pub, '404.html')));
+
   adm.use(auth);
   adm.use((q, s, n) => q.admin && q.admin.role === 'editor' && /^\/(api\/(enquiries|settings|analytics|users)|cv\/)/.test(q.path) ? s.status(403).json({ error: 'forbidden' }) : n());
   adm.use((q, s, n) => q.method !== 'GET' && q.get('x-pdc-admin') !== '1' ? s.status(403).end() : n());
-
-  adm.get('/', (q, s) => s.set('Cache-Control', 'no-store').type('html').send('<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content=noindex><title>PDC Admin</title><style>body{font:15px system-ui;margin:0 auto;max-width:860px;padding:20px;color:#111}nav button{margin:0 6px 10px 0;padding:8px 14px}nav .on{background:#0a3fd0;color:#fff}.card{border:1px solid #ccc;border-radius:8px;padding:12px;margin:10px 0}label{display:block;margin:8px 0}input:not([type=checkbox]),textarea,select{display:block;width:100%;padding:7px}button{cursor:pointer}</style><div id=app></div><script src="/assets/admin.js"></script>'));
 
   adm.get('/api/schema', (q, s) => s.json(FIELDS));
 

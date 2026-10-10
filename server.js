@@ -137,7 +137,8 @@ const auth = [
       q.admin = u;
       return n();
     }
-    s.set('WWW-Authenticate', 'Basic realm="PDC admin"').status(401).send('Authentication required');
+    if (q.get('x-pdc-admin') !== '1') s.set('WWW-Authenticate', 'Basic realm="PDC admin"');
+    s.status(401).send('Authentication required');
   }
 ];
 
@@ -176,4 +177,13 @@ app.use((e, q, s, n) => {
   s.status(500).send('Server error');
 });
 
-app.listen(process.env.PORT || 3000, () => console.log('PDC site on :' + (process.env.PORT || 3000)));
+const server = app.listen(process.env.PORT || 3000, () => console.log('PDC site on :' + (process.env.PORT || 3000)));
+
+// Longer than Render's proxy idle timeout, to avoid 502s on reused connections.
+server.keepAliveTimeout = 65000;
+server.headersTimeout = 66000;
+
+process.on('SIGTERM', () => {
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(0), 10000).unref();
+});
