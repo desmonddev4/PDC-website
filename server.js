@@ -13,7 +13,7 @@ const __d = path.dirname(fileURLToPath(import.meta.url));
 const pub = path.join(__d, 'public');
 const dataDir = process.env.DATA_DIR || path.join(__d, 'data');
 const file = path.join(dataDir, 'enquiries.jsonl');
-const SITE = (process.env.SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
+const SITE = (process.env.SITE_URL || 'https://gecpdc.com').replace(/\/$/, '');
 const routes = JSON.parse(fs.readFileSync(path.join(__d, 'routes.json'), 'utf8'));
 
 fs.mkdirSync(dataDir, { recursive: true });

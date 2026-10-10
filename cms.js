@@ -74,7 +74,7 @@ const FIELDS = {
 
 const SEED = {
   settings: {
-    email: "info@pdc-ghana.com",
+    email: "info@gecpdc.com",
     phone: "+233 00 000 0000",
     address: "Accra, Ghana"
   },
@@ -209,7 +209,9 @@ export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
 
   const load = () => {
     try {
-      return { ...structuredClone(SEED), ...JSON.parse(fs.readFileSync(f, 'utf8')) };
+      const d = { ...structuredClone(SEED), ...JSON.parse(fs.readFileSync(f, 'utf8')) };
+      if (d.settings.email === 'info@pdc-ghana.com') d.settings.email = SEED.settings.email;
+      return d;
     } catch {
       return structuredClone(SEED);
     }
@@ -503,7 +505,10 @@ export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
   });
 
   adm.get('/api/me', (q, s) => s.json(q.admin));
-  adm.get('/api/users', (q, s) => s.json(U.load().map(({ user, role }) => ({ user, role }))));
+  adm.get('/api/users', (q, s) => s.json([
+    ...(process.env.ADMIN_PASS ? [{ user: OWNER(), role: 'owner' }] : []),
+    ...U.load().map(({ user, role }) => ({ user, role }))
+  ]));
   adm.post('/api/users', (q, s) => {
     const { user, role, password } = q.body || {};
     if (!/^[a-z0-9._-]{3,30}$/.test(user || '') || !['admin', 'editor'].includes(role) || String(password || '').length < 12 || user === OWNER()) return s.status(400).json({ error: 'invalid' });

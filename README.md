@@ -18,9 +18,9 @@ Forms post to `POST /api/enquiry` (validated, rate-limited, honeypot). Records a
 `docker build -t pdc-site .`, run with a persistent volume on `/data`, behind HTTPS (Render, Railway, Fly.io, or a VPS with Caddy/nginx). HSTS is sent when `NODE_ENV=production`. Back up `/data`.
 
 ## Before launch
-- Replace placeholder email, phone and address (search `pdc-ghana.com` and `+233 00`) and the sample pipeline rows.
+- Replace placeholder email, phone and address (email is `info@gecpdc.com`; search `+233 00` for the phone placeholder) and the sample pipeline rows.
 - Have counsel approve `public/privacy.html` and `public/terms.html`.
-- Set `SITE_URL` to the real domain; confirm the legal name after ORC clearance.
+- `SITE_URL` defaults to `https://gecpdc.com`; confirm the legal name after ORC clearance.
 - Page copy lives in `public/*.html` (no CMS in this package).
 
 ## Uploads, news, search and statistics

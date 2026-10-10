@@ -23,10 +23,11 @@ PDC.page(async view => {
   };
 
   view.replaceChildren(
-    ...(l.length ? [] : [empty('No extra users yet. The owner account is set by the environment variables.')]),
+    ...(l.length ? [] : [empty('No users yet.')]),
     ...l.map(u => el('div', { className: 'glass ac ar' },
-      el('div', {}, el('b', { textContent: u.user }), el('span', { className: 'tag', textContent: u.role, style: 'margin-left:10px' })),
-      el('button', {
+      el('div', {}, el('b', { textContent: u.user }), el('span', { className: 'tag', textContent: u.role, style: 'margin-left:10px' }),
+        ...(u.role === 'owner' ? [el('div', { className: 'dim', textContent: 'Set by the ADMIN_USER and ADMIN_PASS environment variables' })] : [])),
+      ...(u.role === 'owner' ? [] : [el('button', {
         className: 'btn g sm dg',
         textContent: 'Delete',
         onclick: async () => {
@@ -35,7 +36,7 @@ PDC.page(async view => {
           note('User deleted');
           location.reload();
         }
-      })
+      })])
     )),
     f
   );

@@ -4,7 +4,7 @@ COPY package.json ./
 RUN npm install --omit=dev
 COPY . .
 RUN mkdir -p /data && chown node:node /data
-ENV NODE_ENV=production PORT=3000 DATA_DIR=/data
+ENV NODE_ENV=production PORT=3000 DATA_DIR=/data SITE_URL=https://gecpdc.com
 VOLUME /data
 USER node
 EXPOSE 3000
