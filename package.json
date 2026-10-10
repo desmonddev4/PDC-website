@@ -1,0 +1,1 @@
+{"name":"pdc-website","version":"1.0.0","private":true,"type":"module","scripts":{"start":"node server.js"},"engines":{"node":">=20"},"dependencies":{"compression":"^1.7.4","express":"^4.19.2","express-rate-limit":"^7.4.0","sharp":"^0.33.5","nodemailer":"^6.9.14"}}

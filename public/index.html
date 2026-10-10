@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>PDC | From Opportunity to Execution</title>
+  <meta name="description" content="PDC (GEC Project Development Company Ltd.) originates, develops, structures and delivers infrastructure, energy, mining, agriculture and technology projects.">
+  <meta property="og:title" content="PDC | From Opportunity to Execution">
+  <meta property="og:description" content="PDC (GEC Project Development Company Ltd.) originates, develops, structures and delivers infrastructure, energy, mining, agriculture and technology projects.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/logo.webp">
+  <meta name="theme-color" content="#040b2e">
+  <link rel="icon" href="/assets/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="preload" as="image" href="assets/hero-poster.jpg">
+  <style>
+    /* Hero video background (layers on top of /assets/style.css) */
+    .hero{position:relative;isolation:isolate;overflow:hidden;min-height:100vh;min-height:100svh;display:flex;align-items:center;background:#040b2e}
+    .hero > .wrap{position:relative;z-index:1;width:100%}
+    .hero-media{position:absolute;inset:0;z-index:-2;overflow:hidden}
+    .hero-media video{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+    .hero-media::after{content:"";position:absolute;inset:0;z-index:1;
+      background:
+        linear-gradient(90deg,rgba(4,11,46,.62) 0%,rgba(4,11,46,.25) 45%,rgba(4,11,46,0) 75%),
+        linear-gradient(180deg,rgba(4,11,46,.35) 0%,rgba(4,11,46,0) 18%,rgba(4,11,46,0) 85%,#040b2e 100%)}
+    .hero h1,.hero .sub{text-shadow:0 1px 3px rgba(4,11,46,.7),0 2px 24px rgba(4,11,46,.7)}
+    @media (max-width:820px){
+      .hero-media::after{background:linear-gradient(180deg,rgba(4,11,46,.6) 0%,rgba(4,11,46,.5) 60%,#040b2e 100%)}
+    }
+    .hero-media{background:#040b2e url("assets/hero-poster.jpg") center/cover no-repeat}
+    /* Compact hero content so it fits the viewport */
+    .hero{padding-top:104px;padding-bottom:32px}
+    .hero .grid{gap:36px}
+    .hero h1{font-size:clamp(2rem,4.3vw,3.5rem);margin-bottom:.4em}
+    .hero .grid > div > p:first-child{font-size:.9rem;margin-bottom:.6em}
+    .hero .sub{color:#c9d6f5;font-size:.98rem;line-height:1.55;max-width:54ch;margin-bottom:.6em}
+    .hero .cta{margin-top:20px;gap:10px}
+    .hero .btn{padding:11px 22px;font-size:.88rem}
+    .hero .path{padding:18px 20px}
+    .hero .path h3{font-size:.95rem;margin-bottom:8px}
+    .hero .gate{padding:7px 10px;gap:12px}
+    .hero .gate b{width:28px;height:28px;font-size:.78rem}
+    .hero .gate div{font-size:.92rem;line-height:1.3}
+    .hero .gate small{font-size:.76rem;line-height:1.3}
+    @media (max-height:720px) and (min-width:901px){
+      .hero{padding-top:92px;padding-bottom:20px}
+      .hero h1{font-size:clamp(1.9rem,3.8vw,3rem)}
+      .hero .gate{padding:5px 10px}
+      .hero .gate small{display:none}
+    }
+    @media (max-width:900px){.hero{padding-top:96px;min-height:auto}.hero .path{padding:16px}}
+  </style>
+  <noscript>
+    <style>.r{opacity:1!important;transform:none!important}</style>
+  </noscript>
+</head>
+<body class="">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="bar" id="bar"></div>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+
+  <nav class="glass" id="nav">
+    <a href="/" class="brand">
+      <span class="chip"><img src="/assets/logo.webp" alt="PDC logo"></span>PDC
+    </a>
+    <div class="links" id="links">
+      <div class="dd">
+        <a href="/about">About</a>
+        <div>
+          <a href="/about">Our story</a>
+          <a href="/leadership">Leadership</a>
+          <a href="/team">Team</a>
+          <a href="/methodology">Methodology</a>
+          <a href="/faq">FAQ</a>
+        </div>
+      </div>
+      <div class="dd">
+        <a href="/services">What We Do</a>
+        <div>
+          <a href="/services/project-development">Project Development</a>
+          <a href="/services/feasibility-advisory">Feasibility &amp; Advisory</a>
+          <a href="/services/financial-capital-structuring">Financial &amp; Capital Structuring</a>
+          <a href="/services/project-management">Project Management</a>
+        </div>
+      </div>
+      <a href="/sectors">Sectors</a>
+      <a href="/pipeline">Pipeline</a>
+      <div class="dd">
+        <a href="/insights">Insights</a>
+        <div>
+          <a href="/insights">Insights</a>
+          <a href="/news">News &amp; events</a>
+          <a href="/resources">Resources</a>
+          <a href="/press">Press</a>
+          <a href="/search">Search</a>
+        </div>
+      </div>
+      <a href="/partners">Partners</a>
+      <a href="/careers">Careers</a>
+      <a href="/investors">Investors</a>
+      <a href="/contact" class="btn sm">Start a project</a>
+    </div>
+    <button class="menu" id="menu" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  </nav>
+
+  <main id="main">
+    <header class="hero" id="home">
+      <div class="hero-media" aria-hidden="true">
+        <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.jpg" tabindex="-1">
+          <source src="assets/hero.mp4" type="video/mp4">
+          <source src="assets/hero.webm" type="video/webm">
+        </video>
+      </div>
+      <div class="wrap grid">
+        <div>
+          <p class="r" style="color:var(--gold);font-weight:600">GEC Project Development Company Ltd.</p>
+          <h1 class="r" style="--d:.1s">From Opportunity to <span>Execution</span></h1>
+          <p class="sub r" style="--d:.2s">PDC originates, develops, structures and delivers serious projects with governments, development finance institutions, banks, investors and sponsors, as the project-development arm of Giants Empire Corporation.</p>
+          <div class="cta r" style="--d:.3s">
+            <a class="btn" href="/contact">Submit a project</a>
+            <a class="btn g" href="/services">See our framework</a>
+          </div>
+        </div>
+        <aside class="glass path r" style="--d:.25s">
+          <h3>The PDC Development Gates</h3>
+          <div id="gates">
+            <div class="gate on">
+              <b>0</b>
+              <div>Gate 0 Opportunity<small>Should PDC investigate this opportunity?</small></div>
+            </div>
+            <div class="gate">
+              <b>1</b>
+              <div>Gate 1 Concept<small>Is the opportunity sufficiently credible?</small></div>
+            </div>
+            <div class="gate">
+              <b>2</b>
+              <div>Gate 2 Feasibility<small>Is it technically, commercially and legally viable?</small></div>
+            </div>
+            <div class="gate">
+              <b>3</b>
+              <div>Gate 3 Investment<small>Can it be structured and financed?</small></div>
+            </div>
+            <div class="gate">
+              <b>4</b>
+              <div>Gate 4 Execution<small>Are the conditions for implementation satisfied?</small></div>
+            </div>
+            <div class="gate">
+              <b>5</b>
+              <div>Gate 5 Operations<small>Can the asset operate sustainably?</small></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section id="services">
+      <div class="wrap">
+        <h2 class="r">What we do</h2>
+        <p class="sub r">Four service lines that carry a project from first idea to a funded, operating asset.</p>
+        <div class="cards">
+          <a href="/services/project-development" class="glass card r">
+            <i>🧭</i>
+            <h3>Project Development</h3>
+            <p>Concept validation, project planning, structuring and development management.</p>
+            <p style="margin-top:14px;color:var(--gold);font-weight:600">View details</p>
+          </a>
+          <a href="/services/feasibility-advisory" class="glass card r" style="--d:.1s">
+            <i>🔬</i>
+            <h3>Feasibility &amp; Advisory</h3>
+            <p>Technical, market, operational, regulatory and environmental studies with risk assessment.</p>
+            <p style="margin-top:14px;color:var(--gold);font-weight:600">View details</p>
+          </a>
+          <a href="/services/financial-capital-structuring" class="glass card r" style="--d:.2s">
+            <i>💠</i>
+            <h3>Financial &amp; Capital Structuring</h3>
+            <p>Financial modelling, financial architecture, investment preparation and capital mobilisation support.</p>
+            <p style="margin-top:14px;color:var(--gold);font-weight:600">View details</p>
+          </a>
+          <a href="/services/project-management" class="glass card r" style="--d:.3s">
+            <i>🛠</i>
+            <h3>Project Management</h3>
+            <p>Technical coordination, procurement, execution tracking, monitoring and handover.</p>
+            <p style="margin-top:14px;color:var(--gold);font-weight:600">View details</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="sectors">
+      <div class="wrap">
+        <h2 class="r">Sectors</h2>
+        <p class="sub r">Capability across the sectors that build productive capacity, and every other sector in which PDC operates.</p>
+        <div class="cards" id="sec">
+          <a href="/sectors/infrastructure" class="glass card r" style="--d:0.0s">
+            <i>⚙️</i>
+            <h3>Infrastructure</h3>
+            <p style="margin-top:10px;color:var(--gold);font-weight:600">Explore sector</p>
+          </a>
+          <a href="/sectors/energy" class="glass card r" style="--d:0.1s">
+            <i>⚡</i>
+            <h3>Energy</h3>
+            <p style="margin-top:10px;color:var(--gold);font-weight:600">Explore sector</p>
+          </a>
+          <a href="/sectors/mining-and-minerals" class="glass card r" style="--d:0.2s">
+            <i>⛏️</i>
+            <h3>Mining and minerals</h3>
+            <p style="margin-top:10px;color:var(--gold);font-weight:600">Explore sector</p>
+          </a>
+          <a href="/sectors/agriculture-and-agro-processing" class="glass card r" style="--d:0.30000000000000004s">
+            <i>🌾</i>
+            <h3>Agriculture and agro-processing</h3>
+            <p style="margin-top:10px;color:var(--gold);font-weight:600">Explore sector</p>
+          </a>
+          <a href="/sectors/logistics-and-mobility" class="glass card r" style="--d:0.0s">
+            <i>🚚</i>
+            <h3>Logistics and mobility</h3>
+            <p style="margin-top:10px;color:var(--gold);font-weight:600">Explore sector</p>
+          </a>
+          <a href="/sectors/technology-and-digital-infrastructure" class="glass card r" style="--d:0.1s">
+            <i>💻</i>
+            <h3>Technology and digital infrastructure</h3>
+            <p style="margin-top:10px;color:var(--gold);font-weight:600">Explore sector</p>
+          </a>
+          <a href="/sectors/urban-development" class="glass card r" style="--d:0.2s">
+            <i>🏙️</i>
+            <h3>Urban development</h3>
+            <p style="margin-top:10px;color:var(--gold);font-weight:600">Explore sector</p>
+          </a>
+          <a href="/sectors/circular-economy-and-environment" class="glass card r" style="--d:0.30000000000000004s">
+            <i>♻️</i>
+            <h3>Circular economy and environment</h3>
+            <p style="margin-top:10px;color:var(--gold);font-weight:600">Explore sector</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="cta" style="padding-top:0">
+      <div class="glass cb r">
+        <h2>Have a project that needs to move from opportunity to execution?</h2>
+        <p class="sub" style="margin:0 auto 24px">Tell us about it. Every submission is screened at Gate 0 and answered with clear next steps.</p>
+        <a class="btn" href="/contact">Submit a project</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap fg">
+      <div>
+        <div class="brand">
+          <span class="chip"><img src="/assets/logo.webp" alt="PDC"></span>PDC
+        </div>
+        <p style="margin-top:12px">Project Development Company. From Opportunity to Execution.</p>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <a href="/about">About</a>
+        <a href="/leadership">Leadership</a>
+        <a href="/careers">Careers</a>
+        <a href="/contact">Contact</a>
+      </div>
+      <div>
+        <h3>Services</h3>
+        <a href="/services/project-development">Project Development</a>
+        <a href="/services/feasibility-advisory">Feasibility &amp; Advisory</a>
+        <a href="/services/financial-capital-structuring">Capital Structuring</a>
+        <a href="/services/project-management">Project Management</a>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <a href="/sectors">Sectors</a>
+        <a href="/pipeline">Pipeline</a>
+        <a href="/insights">Insights</a>
+        <a href="/news">News &amp; events</a>
+        <a href="/resources">Resources</a>
+        <a href="/press">Press</a>
+        <a href="/search">Search</a>
+        <a href="/partners">Partners</a>
+      </div>
+      <div>
+        <h3>Legal</h3>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms of use</a>
+      </div>
+    </div>
+    <div class="wrap copy">
+      &copy; <span id="yr"></span> GEC Project Development Company Ltd., a Giants Empire Corporation company. Final legal name subject to ORC clearance and registration.
+    </div>
+  </footer>
+
+  <script src="/assets/app.js" defer></script>
+  <script>
+    (function(){
+      var v=document.getElementById('heroVideo');
+      if(!v)return;
+      var show=function(){v.classList.add('ready')};
+      if(v.readyState>=2)show();else v.addEventListener('loadeddata',show,{once:true});
+      var p=v.play&&v.play();if(p&&p.catch)p.catch(function(){});
+      if('IntersectionObserver' in window){
+        new IntersectionObserver(function(e){
+          e[0].isIntersecting?(v.play&&v.play().catch(function(){})):v.pause();
+        },{threshold:0}).observe(v);
+      }
+    })();
+  </script>
+</body>
+</html>

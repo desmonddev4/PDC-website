@@ -1,0 +1,23 @@
+{
+ "/": "index.html",
+ "/about": "about.html",
+ "/services": "services.html",
+ "/services/project-development": "services/project-development.html",
+ "/services/feasibility-advisory": "services/feasibility-advisory.html",
+ "/services/financial-capital-structuring": "services/financial-capital-structuring.html",
+ "/services/project-management": "services/project-management.html",
+ "/sectors": "sectors.html",
+ "/pipeline": "pipeline.html",
+ "/insights": "insights.html",
+ "/partners": "partners.html",
+ "/careers": "careers.html",
+ "/contact": "contact.html",
+ "/privacy": "privacy.html",
+ "/terms": "terms.html",
+ "/methodology": "methodology.html",
+ "/resources": "resources.html",
+ "/faq": "faq.html",
+ "/team": "team.html",
+ "/press": "press.html",
+ "/investors": "investors.html"
+}

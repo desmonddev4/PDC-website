@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Contact | PDC</title>
+  <meta name="description" content="Submit a project or send a client, investor or partner enquiry.">
+  <meta property="og:title" content="Contact | PDC">
+  <meta property="og:description" content="Submit a project or send a client, investor or partner enquiry.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/logo.webp">
+  <meta name="theme-color" content="#040b2e">
+  <link rel="icon" href="/assets/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <noscript>
+    <style>.r{opacity:1!important;transform:none!important}</style>
+  </noscript>
+</head>
+<body class="inner">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="bar" id="bar"></div>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+
+  <nav class="glass" id="nav">
+    <a href="/" class="brand">
+      <span class="chip"><img src="/assets/logo.webp" alt="PDC logo"></span>PDC
+    </a>
+    <div class="links" id="links">
+      <div class="dd">
+        <a href="/about">About</a>
+        <div>
+          <a href="/about">Our story</a>
+          <a href="/leadership">Leadership</a>
+          <a href="/team">Team</a>
+          <a href="/methodology">Methodology</a>
+          <a href="/faq">FAQ</a>
+        </div>
+      </div>
+      <div class="dd">
+        <a href="/services">What We Do</a>
+        <div>
+          <a href="/services/project-development">Project Development</a>
+          <a href="/services/feasibility-advisory">Feasibility &amp; Advisory</a>
+          <a href="/services/financial-capital-structuring">Financial &amp; Capital Structuring</a>
+          <a href="/services/project-management">Project Management</a>
+        </div>
+      </div>
+      <a href="/sectors">Sectors</a>
+      <a href="/pipeline">Pipeline</a>
+      <div class="dd">
+        <a href="/insights">Insights</a>
+        <div>
+          <a href="/insights">Insights</a>
+          <a href="/news">News &amp; events</a>
+          <a href="/search">Search</a>
+          <a href="/resources">Resources</a>
+          <a href="/press">Press</a>
+        </div>
+      </div>
+      <a href="/partners">Partners</a>
+      <a href="/careers">Careers</a>
+      <a href="/investors">Investors</a>
+      <a href="/contact" class="btn sm">Start a project</a>
+    </div>
+    <button class="menu" id="menu" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  </nav>
+
+  <main id="main">
+    <section id="enquire">
+      <div class="wrap split">
+        <div>
+          <h1 class="r">Start the conversation</h1>
+          <p class="sub r">Choose the route that fits. Every submission is screened at Gate 0, and we respond with next steps. Information you share is treated as confidential.</p>
+          <p class="r">
+            <b style="color:#fff">{{address}}</b><br>
+            <a href="mailto:{{email}}">{{email}}</a><br>
+            {{phone}}
+          </p>
+        </div>
+        <div class="r">
+          <div class="tabs" id="tabs">
+            <button class="on">Submit a project</button>
+            <button>Client enquiry</button>
+            <button>Investor enquiry</button>
+            <button>Partner registration</button>
+          </div>
+          <form class="glass on">
+            <input type="hidden" name="type" value="project">
+            <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <label>Full name<input name="full_name" required></label>
+            <label>Email<input name="email" type="email" required></label>
+            <label>Sector<select name="sector"></select></label>
+            <label>Project summary and capital required<textarea name="project_summary_and_capital_required" rows="4" required></textarea></label>
+            <button class="btn">Submit project</button>
+            <div class="err" role="alert">Something went wrong. Please try again or email us directly.</div>
+            <div class="ok" role="status">Received. Our team will screen your project and reply by email.</div>
+          </form>
+          <form class="glass">
+            <input type="hidden" name="type" value="client">
+            <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <label>Full name<input name="full_name" required></label>
+            <label>Organisation<input name="organisation" required></label>
+            <label>Email<input name="email" type="email" required></label>
+            <label>How can we help?<textarea name="how_can_we_help" rows="4" required></textarea></label>
+            <button class="btn">Send enquiry</button>
+            <div class="err" role="alert">Something went wrong. Please try again or email us directly.</div>
+            <div class="ok" role="status">Thank you. We will be in touch shortly.</div>
+          </form>
+          <form class="glass">
+            <input type="hidden" name="type" value="investor">
+            <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <label>Full name<input name="full_name" required></label>
+            <label>Institution<input name="institution" required></label>
+            <label>Email<input name="email" type="email" required></label>
+            <label>Investor type<select name="investor_type">
+              <option>Pension fund</option>
+              <option>Insurance</option>
+              <option>DFI</option>
+              <option>Asset manager</option>
+              <option>Private capital</option>
+            </select></label>
+            <label>Areas of interest<textarea name="areas_of_interest" rows="3"></textarea></label>
+            <button class="btn">Request investor briefing</button>
+            <div class="err" role="alert">Something went wrong. Please try again or email us directly.</div>
+            <div class="ok" role="status">Thank you. Our Investment &amp; Partnerships team will contact you.</div>
+          </form>
+          <form class="glass">
+            <input type="hidden" name="type" value="partner">
+            <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <label>Organisation<input name="organisation" required></label>
+            <label>Email<input name="email" type="email" required></label>
+            <label>Partner category<select name="partner_category">
+              <option>Engineering and technical</option>
+              <option>Financial</option>
+              <option>Legal and regulatory</option>
+              <option>Contractor or supplier</option>
+              <option>Technology</option>
+            </select></label>
+            <label>Capabilities<textarea name="capabilities" rows="3"></textarea></label>
+            <button class="btn">Register</button>
+            <div class="err" role="alert">Something went wrong. Please try again or email us directly.</div>
+            <div class="ok" role="status">Registration received. We will confirm after due diligence.</div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap fg">
+      <div>
+        <div class="brand">
+          <span class="chip"><img src="/assets/logo.webp" alt="PDC"></span>PDC
+        </div>
+        <p style="margin-top:12px">Project Development Company. From Opportunity to Execution.</p>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <a href="/about">About</a>
+        <a href="/leadership">Leadership</a>
+        <a href="/team">Team</a>
+        <a href="/careers">Careers</a>
+        <a href="/investors">Investors</a>
+        <a href="/contact">Contact</a>
+      </div>
+      <div>
+        <h3>Services</h3>
+        <a href="/services/project-development">Project Development</a>
+        <a href="/services/feasibility-advisory">Feasibility &amp; Advisory</a>
+        <a href="/services/financial-capital-structuring">Capital Structuring</a>
+        <a href="/services/project-management">Project Management</a>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <a href="/sectors">Sectors</a>
+        <a href="/pipeline">Pipeline</a>
+        <a href="/insights">Insights</a>
+        <a href="/news">News &amp; events</a>
+        <a href="/search">Search</a>
+        <a href="/partners">Partners</a>
+        <a href="/resources">Resources</a>
+        <a href="/press">Press</a>
+      </div>
+      <div>
+        <h3>Legal</h3>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms of use</a>
+      </div>
+    </div>
+    <div class="wrap copy">
+      &copy; <span id="yr"></span> GEC Project Development Company Ltd., a Giants Empire Corporation company. Final legal name subject to ORC clearance and registration.
+    </div>
+  </footer>
+
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>
