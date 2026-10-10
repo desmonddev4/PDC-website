@@ -11,16 +11,47 @@
     nav.classList.toggle('s', scrollY > 40);
   }, { passive: true });
 
-  $('#menu').onclick = () => {
-    const l = $('#links');
-    l.classList.toggle('on');
-    $('#menu').setAttribute('aria-expanded', l.classList.contains('on'));
+  const menu = $('#menu');
+  const links = $('#links');
+  const scrim = document.createElement('div');
+  scrim.className = 'nav-scrim';
+  document.body.append(scrim);
+
+  const setMenu = o => {
+    links.classList.toggle('on', o);
+    document.body.classList.toggle('nav-open', o);
+    menu.setAttribute('aria-expanded', o);
+    menu.setAttribute('aria-label', o ? 'Close menu' : 'Open menu');
+    menu.innerHTML = o ? '&#10005;' : '&#9776;';
   };
+
+  menu.onclick = () => setMenu(!links.classList.contains('on'));
+  scrim.onclick = () => setMenu(false);
+  addEventListener('keydown', e => e.key === 'Escape' && setMenu(false));
+  addEventListener('resize', () => innerWidth > 900 && setMenu(false));
+  links.addEventListener('click', e => e.target.closest('a') && setMenu(false));
 
   const p = location.pathname.replace(/\/$/, '') || '/';
   $$('.links > a, .dd > a').forEach(a => {
     const h = a.getAttribute('href');
     if (h === p || (h !== '/' && p.startsWith(h + '/'))) a.classList.add('on');
+  });
+
+  // Mobile: each dropdown collapses behind a chevron; the one holding the current page starts open.
+  $$('.dd', links).forEach(d => {
+    const a = $('a', d);
+    const t = document.createElement('button');
+    t.type = 'button';
+    t.className = 'dd-t';
+    t.setAttribute('aria-expanded', 'false');
+    t.setAttribute('aria-label', 'Toggle ' + a.textContent.trim() + ' menu');
+    a.after(t);
+    const set = o => {
+      d.classList.toggle('open', o);
+      t.setAttribute('aria-expanded', o);
+    };
+    t.onclick = () => set(!d.classList.contains('open'));
+    if ($$('div a', d).some(x => x.getAttribute('href') === p)) set(true);
   });
 
   $('#yr').textContent = new Date().getFullYear();

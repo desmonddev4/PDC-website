@@ -31,10 +31,10 @@
   const showErr = text => { err.textContent = text; err.style.display = text ? 'block' : 'none'; };
   showErr(m || '');
 
-  const user = el('input', { name: 'user', autocomplete: 'username', required: true, value: store.get() });
+  const user = el('input', { name: 'user', type: 'text', autocomplete: 'username', required: true, value: store.get(), placeholder: 'your.username' });
   user.setAttribute('autocapitalize', 'none');
   user.setAttribute('spellcheck', 'false');
-  const pw = el('input', { name: 'pw', type: 'password', autocomplete: 'current-password', required: true });
+  const pw = el('input', { name: 'pw', type: 'password', autocomplete: 'current-password', required: true, placeholder: 'Enter your password' });
   const caps = el('small', { className: 'hint', textContent: 'Caps Lock is on.' });
   caps.hidden = true;
 
@@ -56,18 +56,19 @@
   pw.addEventListener('blur', () => { caps.hidden = true; });
 
   const remember = el('input', { type: 'checkbox', name: 'remember', checked: !!user.value });
-  const btn = el('button', { className: 'btn signin', type: 'submit' }, el('span', { className: 'lbl', textContent: 'Sign in' }), el('i', { className: 'ring' }));
+  const btn = el('button', { className: 'signin', type: 'submit' }, el('span', { className: 'lbl', textContent: 'Sign in' }), el('i', { className: 'ring' }));
   const wait = ms => new Promise(r => setTimeout(r, ms));
 
-  const f = el('form', { className: 'glass on login' },
-    el('a', { className: 'brand', href: '/' }, el('span', { className: 'chip' }, el('img', { src: '/assets/logo.webp', alt: '' })), 'PDC Admin'),
+  // Form column
+  const f = el('form', { className: 'lg-form' },
     el('h2', { textContent: 'Sign in' }),
-    el('p', { textContent: 'Authorised staff only.', style: 'margin:0' }),
-    el('label', { textContent: 'Username' }, user),
-    el('label', { textContent: 'Password' }, el('div', { className: 'pw' }, pw, eye), caps),
-    el('label', { className: 'chk' }, remember, el('span', { textContent: 'Remember my username' })),
+    el('p', { className: 'sub', textContent: 'Use your staff account to continue.' }),
     err,
-    btn
+    el('label', {}, el('span', { className: 'lb', textContent: 'Username' }), user),
+    el('label', {}, el('span', { className: 'lb', textContent: 'Password' }), el('div', { className: 'pw' }, pw, eye), caps),
+    el('label', { className: 'chk' }, remember, el('span', { textContent: 'Remember my username' })),
+    btn,
+    el('p', { className: 'lg-foot', textContent: 'Authorised staff only.' })
   );
   f.noValidate = false;
   [user, pw].forEach(i => { i.setAttribute('aria-describedby', 'login-err'); i.addEventListener('input', () => {
@@ -119,6 +120,16 @@
     }
   };
 
-  view.replaceChildren(f);
+  // Page layout: brand panel + form panel
+  const side = el('aside', { className: 'lg-side' },
+    el('a', { className: 'lg-brand', href: '/' }, el('span', { className: 'chip' }, el('img', { src: '/assets/logo.webp', alt: '' })), 'PDC Admin'),
+    el('div', { className: 'lg-pitch' },
+      el('h1', { textContent: 'Welcome back to PDC Admin.' }),
+      el('p', { textContent: 'Sign in to manage your site, your content and your team in one place.' })
+    )
+  );
+  const page = el('div', { className: 'lg' }, side, el('main', { className: 'lg-main' }, f));
+
+  view.replaceChildren(page);
   (user.value ? pw : user).focus();
 })();

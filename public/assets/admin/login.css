@@ -1,46 +1,117 @@
-/* Admin sign-in page. Loaded after admin.css. */
+/* Admin sign-in page. Standalone: replaces the old login.css and no longer needs style.css / admin.css. */
 
-.login{max-width:380px;margin:12vh auto 0;padding:28px}
-.login h2{font-size:1.6rem}
+:root{
+  --ink:#060d33;      /* deep navy */
+  --navy:#0d1a5c;     /* panel highlight */
+  --gold:#f2b400;
+  --gold-d:#d99a00;
+  --paper:#f7f5ef;    /* form side */
+  --line:#d9d5c8;
+  --text:#121a3d;
+  --mut:#5c6382;
+  --bad:#c42b2b;
+  --bad-bg:#fdecec;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font:400 16px/1.5 'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--paper);color:var(--text);-webkit-font-smoothing:antialiased}
+#view{min-height:100%}
+
+.lg{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);min-height:100dvh;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
+/* ---------- Brand panel ---------- */
+.lg-side{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;
+  padding:44px 56px;color:#fff;
+  background:radial-gradient(120% 90% at 0% 100%,var(--navy) 0%,var(--ink) 62%)}
+.lg-side::before{content:"";position:absolute;width:140%;aspect-ratio:1;left:-70%;bottom:-85%;border-radius:50%;pointer-events:none;
+  background:repeating-radial-gradient(circle,rgba(242,180,0,.34) 0 1.5px,transparent 1.5px 46px);
+  -webkit-mask-image:radial-gradient(circle at 60% 30%,#000 0,transparent 68%);mask-image:radial-gradient(circle at 60% 30%,#000 0,transparent 68%)}
+.lg-side>*{position:relative}
+
+.lg-brand{display:inline-flex;align-items:center;gap:12px;color:#fff;text-decoration:none;font-weight:700;font-size:1.05rem;letter-spacing:.01em;width:max-content}
+.lg-brand .chip{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18)}
+.lg-brand img{width:24px;height:24px;object-fit:contain}
+.lg-brand:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:10px}
+
+.lg-pitch h1{margin:0 0 14px;max-width:13ch;font:600 clamp(2.2rem,3.6vw,3.4rem)/1.05 'Fraunces',Georgia,serif;letter-spacing:-.015em}
+.lg-pitch p{margin:0;max-width:34ch;color:rgba(255,255,255,.72);font-size:1.02rem}
+
+/* ---------- Form panel ---------- */
+.lg-main{display:flex;align-items:center;justify-content:center;padding:40px 28px}
+.lg-form{width:100%;max-width:400px;display:flex;flex-direction:column;gap:18px}
+.lg-form h2{margin:0;font:600 2rem/1.1 'Fraunces',Georgia,serif;letter-spacing:-.01em;color:var(--ink)}
+.lg-form .sub{margin:-8px 0 4px;color:var(--mut);font-size:.96rem}
+
+.lg-form label{display:flex;flex-direction:column;gap:7px;margin:0}
+.lg-form .lb{font-size:.86rem;font-weight:600;color:var(--text)}
+.lg-form input[type=text],.lg-form input:not([type]),.lg-form input[type=password]{
+  width:100%;height:52px;padding:0 16px;border:1.5px solid var(--line);border-radius:12px;background:#fff;
+  font:500 1rem 'Figtree',system-ui,sans-serif;color:var(--text);transition:border-color .2s,box-shadow .2s}
+.lg-form input::placeholder{color:#9aa0b8}
+.lg-form input:hover{border-color:#bdb8a6}
+.lg-form input:focus{outline:0;border-color:var(--ink);box-shadow:0 0 0 4px rgba(242,180,0,.35)}
+.lg-form input[aria-invalid=true]{border-color:var(--bad);box-shadow:0 0 0 4px rgba(196,43,43,.14)}
+
+/* Password toggle */
+.lg-form .pw{position:relative}
+.lg-form .pw input{padding-right:52px}
+.pw-t{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:9px;background:none;color:var(--mut);cursor:pointer;transition:color .2s,background .2s}
+.pw-t:hover{color:var(--ink);background:rgba(6,13,51,.06)}
+.pw-t svg{width:20px;height:20px}
+.pw-t:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+
+/* Caps Lock hint */
+.lg-form .hint{display:block;font-size:.8rem;font-weight:600;color:#8a5b00}
+.lg-form .hint[hidden]{display:none}
+
+/* Remember username */
+.lg-form .chk{flex-direction:row;align-items:center;gap:10px;font-size:.9rem;color:var(--mut);font-weight:500;cursor:pointer;width:max-content}
+.lg-form .chk input{appearance:none;-webkit-appearance:none;width:20px;height:20px;margin:0;flex:none;border:1.5px solid var(--line);border-radius:6px;background:#fff;display:grid;place-items:center;cursor:pointer;transition:background .15s,border-color .15s}
+.lg-form .chk input::after{content:"";width:10px;height:5px;border:solid var(--ink);border-width:0 0 2.5px 2.5px;transform:rotate(-45deg) translate(1px,-1px) scale(0);transition:transform .15s}
+.lg-form .chk input:checked{background:var(--gold);border-color:var(--gold-d)}
+.lg-form .chk input:checked::after{transform:rotate(-45deg) translate(1px,-1px) scale(1)}
+.lg-form .chk input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* Error / notice */
+.lg-form .err{display:none;padding:12px 14px;border-radius:12px;border:1px solid rgba(196,43,43,.25);background:var(--bad-bg);color:#8f1d1d;font-size:.9rem;line-height:1.45;font-weight:500}
 
 /* Sign-in button: morphs into a spinning circle while signing in */
-.login .signin{position:relative;width:100%;height:46px;padding:0;margin:0 auto;justify-content:center;transition:width .4s cubic-bezier(.65,0,.35,1),box-shadow .4s}
+.lg-form .signin{position:relative;display:flex;align-items:center;justify-content:center;align-self:center;width:100%;height:54px;padding:0;margin-top:4px;border:0;border-radius:14px;cursor:pointer;
+  font:700 1rem 'Figtree',system-ui,sans-serif;letter-spacing:.01em;color:var(--ink);
+  background:linear-gradient(180deg,#ffc928 0%,var(--gold) 55%,#e9a900 100%);
+  box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 10px 24px -8px rgba(217,154,0,.75);
+  transition:width .4s cubic-bezier(.65,0,.35,1),border-radius .4s,transform .15s,box-shadow .25s,filter .2s}
+.lg-form .signin:hover{filter:brightness(1.04);transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 14px 28px -8px rgba(217,154,0,.85)}
+.lg-form .signin:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 4px 12px -4px rgba(217,154,0,.7)}
+.lg-form .signin:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.lg-form .signin:disabled{opacity:.7;cursor:not-allowed}
 .signin .lbl{transition:opacity .2s}
-.signin .ring{position:absolute;inset:11px;border-radius:50%;border:3px solid rgba(26,18,0,.2);border-top-color:#1a1200;opacity:0;transition:opacity .2s .15s}
-.signin.loading{width:46px;pointer-events:none;box-shadow:0 0 0 6px rgba(242,180,0,.18),0 8px 26px rgba(242,180,0,.4)}
+.signin .ring{position:absolute;inset:13px;border-radius:50%;border:3px solid rgba(6,13,51,.2);border-top-color:var(--ink);opacity:0;transition:opacity .2s .15s}
+.lg-form .signin.loading{width:54px;border-radius:50%;pointer-events:none;transform:none;box-shadow:0 0 0 7px rgba(242,180,0,.22),0 12px 28px -6px rgba(217,154,0,.7)}
 .signin.loading .lbl{opacity:0}
-.signin.loading .ring{opacity:1;animation:login-spin .8s linear infinite!important}
-.login.shake{animation:login-shake .4s}
+.signin.loading .ring{opacity:1;animation:login-spin .8s linear infinite}
+
+.lg-foot{margin:6px 0 0;font-size:.82rem;color:var(--mut)}
+
+.lg-form.shake{animation:login-shake .4s}
 @keyframes login-spin{to{transform:rotate(360deg)}}
 @keyframes login-shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
 
-/* Password field with show/hide toggle */
-.login .pw{position:relative}
-.login .pw input{width:100%;padding-right:44px}
-.pw-t{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:8px;background:none;color:var(--mut);cursor:pointer;transition:color .2s,background .2s}
-.pw-t:hover{color:var(--gold);background:rgba(255,255,255,.08)}
-.pw-t svg{width:18px;height:18px}
-.pw-t:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
-
-/* Caps Lock hint */
-.login .hint{display:block;margin-top:4px;font-size:.74rem;font-weight:600;color:var(--gold)}
-.login .hint[hidden]{display:none}
-
-/* Remember username */
-.login .chk{font-size:.82rem;color:var(--mut);font-weight:500}
-.login .chk input{width:16px;height:16px;accent-color:var(--gold);flex:none}
-
-/* Invalid state */
-.login input[aria-invalid=true]{border-color:rgba(255,80,80,.75);box-shadow:0 0 0 3px rgba(255,80,80,.18)}
-.login .err{padding:9px 12px;border-radius:10px;font-size:.82rem;line-height:1.4}
-
-/* Button: no hover lift while loading, visible keyboard focus */
-.login .signin:focus-visible{outline:2px solid #fff;outline-offset:3px}
-.login .signin:disabled{opacity:.7;cursor:not-allowed}
+/* ---------- Responsive ---------- */
+@media(max-width:860px){
+  .lg{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .lg-side{padding:22px 24px;flex-direction:row;align-items:center}
+  .lg-side::before{width:260%;left:-80%;bottom:-260%}
+  .lg-pitch{display:none}
+  .lg-main{align-items:flex-start;padding:36px 22px 48px}
+}
 
 /* Respect reduced-motion */
 @media(prefers-reduced-motion:reduce){
-  .login.shake{animation:none}
-  .signin.loading .ring{animation-duration:1.6s!important}
-  .signin,.signin .lbl,.signin .ring{transition:none}
+  .lg-form.shake{animation:none}
+  .signin.loading .ring{animation-duration:1.6s}
+  .lg-form .signin,.signin .lbl,.signin .ring,.lg-form input,.lg-form .chk input,.lg-form .chk input::after{transition:none}
+  .lg-form .signin:hover,.lg-form .signin:active{transform:none}
 }
