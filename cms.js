@@ -72,6 +72,10 @@ const FIELDS = {
   ]
 };
 
+const NANA_OLD_BIO = "Nana Akwasi Owusu-Ansah is the Managing Director of PDC, responsible for the company's operational build-out and market engagement. He leads the execution of the PDC Institutional Establishment mandate, overseeing the development of systems, legal foundation, brand, operating architecture and commercial engine. His background spans project development, financial structuring and multi-stakeholder coordination.";
+const NANA_BIO = "Nana Kwasi Owusu Ansah serves as the Managing Director of GEC Project Development Company Ltd. (PDC), where he provides strategic leadership and oversees the company’s project development activities, institutional growth, and operational direction.\n\nHis role focuses on identifying and developing viable project opportunities, coordinating feasibility assessments, structuring projects for investment, and establishing the systems and partnerships required to move projects from concept to implementation.\n\nWith an academic background in Economics, his approach to project development is grounded in economic analysis, strategic planning, commercial viability, and sustainable value creation.\n\nAs Managing Director, he is committed to building a disciplined, results-oriented institution that transforms viable opportunities into well-structured and sustainable projects.";
+const NANA_PHOTO = '/assets/assets/WhatsApp%20Image%202026-10-10%20at%2010.47.17%20PM.jpeg';
+
 const SEED = {
   settings: {
     email: "info@gecpdc.com",
@@ -180,9 +184,10 @@ const SEED = {
     {
       id: "t2",
       date: "2026-10-05",
-      name: "Nana Akwasi Owusu-Ansah",
-      role: "Managing Director, GEC Project Development Company Ltd.",
-      bio: "Nana Akwasi Owusu-Ansah is the Managing Director of PDC, responsible for the company's operational build-out and market engagement. He leads the execution of the PDC Institutional Establishment mandate, overseeing the development of systems, legal foundation, brand, operating architecture and commercial engine. His background spans project development, financial structuring and multi-stakeholder coordination.",
+      name: "Nana Kwasi Owusu Ansah",
+      role: "Managing Director | GEC Project Development Company Ltd.",
+      bio: NANA_BIO,
+      photo: NANA_PHOTO,
       order: 2,
       published: true
     }
@@ -209,8 +214,19 @@ export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
 
   const load = () => {
     try {
-      const d = { ...structuredClone(SEED), ...JSON.parse(fs.readFileSync(f, 'utf8')) };
+      const stored = JSON.parse(fs.readFileSync(f, 'utf8'));
+      const d = { ...structuredClone(SEED), ...stored };
       if (d.settings.email === 'info@pdc-ghana.com') d.settings.email = SEED.settings.email;
+      const nana = d.team.find(x => x.id === 't2' || x.name === 'Nana Akwasi Owusu-Ansah');
+      if (nana && (nana.bio === NANA_OLD_BIO || (nana.id === 't2' && !nana.photo))) {
+        Object.assign(nana, {
+          name: 'Nana Kwasi Owusu Ansah',
+          role: 'Managing Director | GEC Project Development Company Ltd.',
+          bio: NANA_BIO,
+          photo: NANA_PHOTO
+        });
+        save(d);
+      }
       return d;
     } catch {
       return structuredClone(SEED);
@@ -354,7 +370,7 @@ export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
     return [
       'Leadership | PDC',
       'The people leading PDC.',
-      W(`<h1 class="r">Leadership</h1><p class="sub r">The people accountable for building PDC as an institution.</p><div class="cards">${t.map(x => `<div class="glass card r">${x.photo ? `<img class="av" src="${esc(x.photo)}" alt="${esc(x.name)}">` : `<div class="av">${esc(x.name.split(/\s+/).map(w => w[0]).slice(0, 2).join(''))}</div>`}<h3>${esc(x.name)}</h3><p style="color:var(--gold);font-weight:600">${esc(x.role)}</p>${x.bio ? para(x.bio) : ''}</div>`).join('') || empty('Leadership profiles are coming soon.')}</div>`)
+      W(`<h1 class="r">Leadership</h1><p class="sub r">The people accountable for building PDC as an institution.</p><div class="leaders">${t.map(x => `<article class="glass leader r"><div class="leader-media">${x.photo ? `<img src="${esc(x.photo)}" alt="Portrait of ${esc(x.name)}" loading="lazy">` : `<div class="leader-placeholder">${esc(x.name.split(/\s+/).map(w => w[0]).slice(0, 2).join(''))}</div>`}</div><div class="leader-copy"><p class="leader-kicker">PDC leadership</p><h2>${esc(x.name)}</h2><p class="leader-role">${esc(x.role)}</p>${x.bio ? para(x.bio) : ''}</div></article>`).join('') || empty('Leadership profiles are coming soon.')}</div>`)
     ];
   });
 
