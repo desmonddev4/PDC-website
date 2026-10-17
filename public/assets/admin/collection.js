@@ -68,7 +68,7 @@
     const F = S[c];
     const noun = NOUN[c] || 'item';
     const form = el('form', { className: 'glass on', noValidate: true, hidden: true });
-    const list = el('div');
+    const list = el('div', { className: 'record-grid' });
     let cur = null;
     let step = 0;
 
@@ -161,7 +161,7 @@
       cur = null;
     };
 
-    const row = it => el('div', { className: 'glass ac ar' },
+    const row = it => el('div', { className: 'glass ac ar record-card' },
       el('div', {},
         el('b', { textContent: it[F[0][0]] }),
         ...(it.published ? [] : [el('span', { className: 'tag draft', textContent: 'Draft' })]),

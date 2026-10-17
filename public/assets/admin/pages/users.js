@@ -2,7 +2,7 @@ PDC.page(async view => {
   const { el, note, ask, empty, api } = PDC;
   const l = await api('users');
 
-  const f = el('form', { className: 'glass on', style: 'margin-top:26px' },
+  const f = el('form', { className: 'glass on user-form' },
     el('h3', { textContent: 'Create a user, or reset a password' }),
     el('p', { className: 'dim', style: 'margin:0', textContent: 'Use the same username to reset an existing password.' }),
     el('label', { textContent: 'Username' }, el('input', { name: 'user' })),
@@ -22,9 +22,9 @@ PDC.page(async view => {
     }
   };
 
-  view.replaceChildren(
+  const users = el('div', { className: 'user-grid' },
     ...(l.length ? [] : [empty('No users yet.')]),
-    ...l.map(u => el('div', { className: 'glass ac ar' },
+    ...l.map(u => el('div', { className: 'glass ac ar user-card' },
       el('div', {}, el('b', { textContent: u.user }), el('span', { className: 'tag', textContent: u.role, style: 'margin-left:10px' }),
         ...(u.role === 'owner' ? [el('div', { className: 'dim', textContent: 'Set by the ADMIN_USER and ADMIN_PASS environment variables' })] : [])),
       ...(u.role === 'owner' ? [] : [el('button', {
@@ -37,7 +37,8 @@ PDC.page(async view => {
           location.reload();
         }
       })])
-    )),
-    f
+    ))
   );
+
+  view.replaceChildren(el('div', { className: 'user-layout' }, users, f));
 });
