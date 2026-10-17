@@ -79,8 +79,8 @@ const NANA_PHOTO = '/assets/assets/WhatsApp%20Image%202026-10-10%20at%2010.47.17
 const SEED = {
   settings: {
     email: "info@gecpdc.com",
-    phone: "+233 00 000 0000",
-    address: "Accra, Ghana"
+    phone: "+233 55 413 4121",
+    address: "Kumasi, Ghana"
   },
   status: {},
   news: [],
@@ -194,7 +194,7 @@ const SEED = {
   ]
 };
 
-export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
+export function mountCms(app, { auth, pub, dataDir, esc, all, T, seo }) {
   const f = path.join(dataDir, 'content.json');
 
   app.use((q, s, n) => {
@@ -258,7 +258,7 @@ export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
   const R = (p, fn) => app.get(p, (q, s) => {
     const r = fn(q, load());
     if (!r) return s.status(404).sendFile(path.join(pub, '404.html'));
-    s.type('html').send(page(...r));
+    s.type('html').send(seo(page(...r), q.path));
   });
 
   const sector = n => SECT.find(x => slug(x[0]) === n);
@@ -603,7 +603,9 @@ export function mountCms(app, { auth, pub, dataDir, esc, all, T }) {
   return {
     fill: h => {
       const st = load().settings;
-      return h.replace(/\{\{(email|phone|address)\}\}/g, (m, k) => esc(st[k]));
+      const phone = st.phone === '+233 00 000 0000' ? '' : st.phone;
+      const filled = h.replace(/\{\{(email|phone|address)\}\}/g, (m, k) => esc(k === 'phone' ? phone : st[k]));
+      return phone ? filled : filled.replace(/<br>\s*<br>\s*Open 24 hours, every day/, '<br>Open 24 hours, every day');
     },
     urls: () => {
       const d = load();

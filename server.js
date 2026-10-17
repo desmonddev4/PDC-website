@@ -55,6 +55,51 @@ const esc = v => String(v).replace(/[&<>"']/g, c => ({
   "'": '&#39;'
 }[c]));
 
+const seo = (html, route) => {
+  const canonical = esc(SITE + (route === '/' ? '' : route));
+  const schema = route === '/' ? `<script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': SITE + '/#organization',
+        name: 'PDC',
+        url: SITE + '/',
+        logo: SITE + '/assets/logo.webp',
+        email: 'info@gecpdc.com',
+        sameAs: ['https://share.google/5HElEzNocs8FmNRYO'],
+        telephone: '+233554134121',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Kumasi',
+          addressCountry: 'GH'
+        },
+        contactPoint: {
+          '@type': 'ContactPoint',
+          telephone: '+233554134121',
+          contactType: 'business inquiries',
+          hoursAvailable: {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            opens: '00:00',
+            closes: '23:59'
+          }
+        },
+        description: 'Project development, feasibility and advisory, financial and capital structuring, and project management for infrastructure and investment projects.'
+      },
+      {
+        '@type': 'WebSite',
+        '@id': SITE + '/#website',
+        url: SITE + '/',
+        name: 'PDC',
+        publisher: { '@id': SITE + '/#organization' }
+      }
+    ]
+  }).replace(/</g, '\\u003c')}</script>` : '';
+
+  return html.replace('</head>', `<link rel="canonical" href="${canonical}">\n<meta property="og:url" content="${canonical}">\n${schema}</head>`);
+};
+
 const mail = process.env.SMTP_HOST ? nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: +process.env.SMTP_PORT || 587,
@@ -154,7 +199,7 @@ app.get('/admin/export.csv', auth, (q, s) => {
     .send([cols.map(c).join(','), ...rs.map(r => cols.map(k => c(r[k])).join(','))].join('\n'));
 });
 
-const cms = mountCms(app, { auth, pub, dataDir, esc, all, T });
+const cms = mountCms(app, { auth, pub, dataDir, esc, all, T, seo });
 
 app.get('/robots.txt', (q, s) => s.type('text/plain').send(
   `User-agent: *\nAllow: /\nDisallow: /admin\nSitemap: ${SITE}/sitemap.xml\n`
@@ -171,7 +216,7 @@ app.use('/assets', express.static(path.join(pub, 'assets'), {
 }));
 
 for (const [r, f] of Object.entries(routes)) {
-  app.get(r, (q, s) => s.type('html').send(cms.fill(fs.readFileSync(path.join(pub, f), 'utf8'))));
+  app.get(r, (q, s) => s.type('html').send(seo(cms.fill(fs.readFileSync(path.join(pub, f), 'utf8')), q.path)));
 }
 
 app.use((q, s) => s.status(404).sendFile(path.join(pub, '404.html')));

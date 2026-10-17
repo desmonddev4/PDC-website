@@ -161,11 +161,15 @@
       cur = null;
     };
 
+    const imageKey = F.find(([, type]) => type === 'image')?.[0];
     const row = it => el('div', { className: 'glass ac ar record-card' },
-      el('div', {},
-        el('b', { textContent: it[F[0][0]] }),
-        ...(it.published ? [] : [el('span', { className: 'tag draft', textContent: 'Draft' })]),
-        ...(it.date ? [el('div', { className: 'dim', textContent: it.date })] : [])
+      el('div', { className: 'record-info' },
+        ...(imageKey && it[imageKey] ? [el('img', { className: 'record-thumb', src: it[imageKey], alt: '' })] : []),
+        el('div', {},
+          el('b', { textContent: it[F[0][0]] }),
+          ...(it.published ? [] : [el('span', { className: 'tag draft', textContent: 'Draft' })]),
+          ...(it.date ? [el('div', { className: 'dim', textContent: it.date })] : [])
+        )
       ),
       el('div', { className: 'ar-act' },
         el('button', { className: 'btn g sm', textContent: 'Edit', onclick: () => open(it) }),

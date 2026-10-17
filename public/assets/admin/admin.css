@@ -75,6 +75,9 @@ html.side-min .acct-menu{left:8px;right:auto;min-width:160px}
 .record-grid>.ac:only-child:not(.record-card){grid-column:1/-1}
 .record-card{display:flex;flex-direction:column;justify-content:space-between;gap:14px;margin:0;min-width:0}
 .record-card>div:first-child{min-width:0;overflow-wrap:anywhere}
+.record-info{display:flex;align-items:center;gap:12px;min-width:0}
+.record-info>div{min-width:0}
+.record-thumb{flex:none;width:56px;height:56px;border:1px solid var(--gb);border-radius:8px;object-fit:cover}
 .record-card .ar-act{justify-content:flex-end}
 .user-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:16px;align-items:start}
 .user-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;align-content:start}
